@@ -13,6 +13,7 @@ func main() {
 	fmt.Println("-----------------------")
 	filename := os.Args[1] //let it explode just in case..
 	file, e := os.Open(filename)
+	defer file.Close()
 	if e != nil {
 		panic(e)
 	}
@@ -31,6 +32,7 @@ func checkServiceIsAlive(endpoint string) {
 		fmt.Printf("Argh! Error calling %s\n", endpoint)
 		return
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 		fmt.Printf("%s OK\n", endpoint)
 	} else {
